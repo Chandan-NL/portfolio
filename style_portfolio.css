@@ -37,14 +37,14 @@ nav a:hover {
 
 .hero_section{
     display: grid;
-    height: 732px;
+    height: 745px;
     background-color : yellow;
 }
 
 .imagepos{
     position: relative;
-    top: 13%;
-    left: 68%;
+    top: 15%;
+    left: 67%;
 }
 
 #hero_name{
