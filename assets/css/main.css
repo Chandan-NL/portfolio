@@ -1709,6 +1709,10 @@ h6 {
     display: flex;
     flex-direction: column;
   }
+
+  #karnataka{
+    visibility: hidden;
+  }
 }
 
 /******  Small  *******/
@@ -1842,6 +1846,14 @@ h6 {
   .cnlMain {
     display: flex;
     flex-direction: column;
+  }
+
+  #touch{
+    /* visibility: hidden; */
+    margin-top: 15px;
+  }
+  #karnataka{
+    visibility: hidden;
   }
 }
 
