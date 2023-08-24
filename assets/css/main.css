@@ -1423,51 +1423,6 @@ h6 {
     margin-bottom: 10px;
   }
 
-  .about-location-beacon,
-  .about-location-pin {
-    display: inline-block;
-    position: absolute
-  }
-
-  .about-location-pin {
-    width: .875em;
-    height: .875em;
-    background-color: yellow;
-    top: 40.1em;
-    left: 43.1em;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #e91e63;
-    border-radius: .875em
-  }
-
-  .about-location-beacon {
-    width: 3.125em;
-    height: 3.125em;
-    top: 39em;
-    left: 42em;
-    background-color: #fff;
-    opacity: 0.5;
-    animation: about-location-beacon 2s linear infinite;
-    transform: scale3d(0.25, 0.25, 0.25);
-    border-radius: 3.125em;
-  }
-
-  @keyframes about-location-beacon {
-
-    0%,
-    100% {
-      transform: scale3d(0.25, 0.25, 0.25);
-      opacity: 0.5;
-    }
-
-    50% {
-      transform: scale3d(1, 1, 1);
-      opacity: 0.8;
-    }
-  }
-
-
 }
 
 /******  Middle  *******/
@@ -1710,9 +1665,6 @@ h6 {
     flex-direction: column;
   }
 
-  #karnataka{
-    visibility: hidden;
-  }
 }
 
 /******  Small  *******/
@@ -1848,13 +1800,6 @@ h6 {
     flex-direction: column;
   }
 
-  #touch{
-    /* visibility: hidden; */
-    margin-top: 15px;
-  }
-  #karnataka{
-    visibility: hidden;
-  }
 }
 
 .sr-only {
