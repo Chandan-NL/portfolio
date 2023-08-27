@@ -1666,6 +1666,10 @@ h6 {
     flex-direction: column;
   }
 
+  .cnljustify{
+    text-align: justify;
+  }
+
 }
 
 /******  Small  *******/
@@ -1803,6 +1807,10 @@ h6 {
 
   .padd{
     margin-bottom: 10px;
+  }
+
+  .cnljustify{
+    text-align: justify;
   }
 
 }
