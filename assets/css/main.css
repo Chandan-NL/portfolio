@@ -1422,9 +1422,7 @@ h6 {
   .cnlpad {
     margin-bottom: 10px;
   }
-  .padd{
-    margin-bottom: 10px;
-  }
+  
 
 }
 
@@ -1801,6 +1799,10 @@ h6 {
   .cnlMain {
     display: flex;
     flex-direction: column;
+  }
+
+  .padd{
+    margin-bottom: 10px;
   }
 
 }
