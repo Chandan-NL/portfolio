@@ -27,7 +27,7 @@ jQuery(document).ready(function () {
   ca_tm_mycarousel();
   hashtag();
   ca_tm_ripple();
-  ca_tm_moving_box();
+  // ca_tm_moving_box();
 
   jQuery(window).load("body", function () {
     ca_tm_my_load();
