@@ -1422,7 +1422,14 @@ h6 {
   .cnlpad {
     margin-bottom: 10px;
   }
-  
+
+  .ani-box{
+    filter: grayscale(200%);
+    transition: filter 1000ms;
+  }
+  .ani-box:is(:hover, :focus){
+    filter: grayscale(0%);
+  }
 
 }
 
