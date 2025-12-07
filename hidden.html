@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Copy Apps Script to Clipboard</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #0f172a;
+        color: #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: min(900px, 95vw);
+        background: #020617;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        border: 1px solid #1f2937;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .title {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .copy-btn {
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #22c55e;
+        color: #022c22;
+        font-weight: 600;
+        transition: transform 0.08s ease, box-shadow 0.08s ease,
+          background 0.15s ease;
+        box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3);
+      }
+
+      .copy-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 30px rgba(34, 197, 94, 0.45);
+      }
+
+      .copy-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 14px rgba(34, 197, 94, 0.3);
+      }
+
+      pre {
+        margin: 0;
+        padding: 1rem 1.25rem;
+        background: #020617;
+        border-radius: 0.75rem;
+        overflow: auto;
+        border: 1px solid #1e293b;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      code {
+        font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular,
+          Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        white-space: pre;
+      }
+
+      .status {
+        margin-top: 0.6rem;
+        font-size: 0.8rem;
+        color: #9ca3af;
+        min-height: 1.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="title">Google Apps Script: createSheetEvery5Min()</div>
+        <button id="copy-btn" class="copy-btn">
+          <span>📋</span>
+          <span>Copy to clipboard</span>
+        </button>
+      </div>
+
+      <pre><code id="code-block">function createSheetEvery5Min() {
+  // ---- EDIT: Put your names here ----
+  const names = [
+    "Aarav Mehta",
+    "Riya Kapoor",
+    "Karan Malhotra",
+    "Sneha Reddy",
+    "Vikram Sharma",
+  ];
+  // -----------------------------------
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const now = new Date();
+  const sheetName = Utilities.formatDate(
+    now,
+    Session.getScriptTimeZone(),
+    "yyyy-MM-dd_HH:mm:ss"
+  );
+  const sh = ss.insertSheet(sheetName);
+
+  // ---- HEADERS ----
+  const headers = ["SoakLocation", "Status", "Name", "Soak Result"];
+  sh.getRange(1, 1, 1, headers.length).setValues([headers]);
+
+  const numDataRows = Math.max(names.length, 20); // ensures some extra blank rows
+
+  // Insert names in column C
+  sh.getRange(2, 3, names.length, 1).setValues(names.map((n) => [n]));
+
+  // ---- DATA VALIDATION ----
+
+  // Column B: Status dropdown
+  const statusList = ["ToDo", "PASS", "FAIL"];
+  const statusValidation = SpreadsheetApp.newDataValidation()
+    .requireValueInList(statusList, true)
+    .setAllowInvalid(false)
+    .build();
+  sh.getRange(2, 2, numDataRows, 1).setDataValidation(statusValidation);
+
+  // ---- FORMATTING ----
+
+  // Header styling
+  sh.getRange(1, 1, 1, 4)
+    .setFontWeight("bold")
+    .setBackground("#e0e0e0")
+    .setHorizontalAlignment("center");
+
+  // Enable filters
+  sh.getRange(1, 1, 1, 4).createFilter();
+
+  // Column widths
+  sh.setColumnWidth(1, 150); // SoakLocation
+  sh.setColumnWidth(2, 120); // Status
+  sh.setColumnWidth(3, 200); // Name
+  sh.setColumnWidth(4, 150); // Soak Result
+
+  // Borders for a neat table
+  sh.getRange(1, 1, numDataRows + 1, 4).setBorder(
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  );
+
+  // Center Status & Soak Result
+  sh.getRange(2, 2, numDataRows, 1).setHorizontalAlignment("center");
+  sh.getRange(2, 4, numDataRows, 1).setHorizontalAlignment("center");
+
+  // ---- ALTERNATING ROW COLORS (manual banding) ----
+  const dataRange = sh.getRange(2, 1, numDataRows, 4);
+  const backgrounds = [];
+
+  for (let r = 0; r &lt; numDataRows; r++) {
+    backgrounds[r] = [];
+    for (let c = 0; c &lt; 4; c++) {
+      // even index rows (0,2,4...) -&gt; light gray, odd -&gt; white
+      backgrounds[r][c] = r % 2 === 0 ? "#f2f2f2" : "#ffffff";
+    }
+  }
+  dataRange.setBackgrounds(backgrounds);
+
+  // ---- CONDITIONAL FORMATTING FOR STATUS (Column B) ----
+  const rules = [];
+
+  // ToDo → gray
+  rules.push(
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("ToDo")
+      .setBackground("#d9d9d9")
+      .setRanges([sh.getRange(2, 2, numDataRows)])
+      .build()
+  );
+
+  // PASS → green
+  rules.push(
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("PASS")
+      .setBackground("#b6d7a8")
+      .setRanges([sh.getRange(2, 2, numDataRows)])
+      .build()
+  );
+
+  // FAIL → red
+  rules.push(
+    SpreadsheetApp.newConditionalFormatRule()
+      .whenTextEqualTo("FAIL")
+      .setBackground("#f4cccc")
+      .setRanges([sh.getRange(2, 2, numDataRows)])
+      .build()
+  );
+
+  sh.setConditionalFormatRules(rules);
+}</code></pre>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <script>
+      const copyBtn = document.getElementById("copy-btn");
+      const codeBlock = document.getElementById("code-block");
+      const statusEl = document.getElementById("status");
+
+      async function copyCode() {
+        const codeText = codeBlock.innerText;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(codeText);
+          } else {
+            // Fallback for very old browsers
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = codeText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+          }
+
+          copyBtn.querySelector("span:nth-child(2)").textContent = "Copied!";
+          statusEl.textContent = "Code copied to clipboard.";
+          setTimeout(() => {
+            copyBtn.querySelector("span:nth-child(2)").textContent =
+              "Copy to clipboard";
+            statusEl.textContent = "";
+          }, 1500);
+        } catch (err) {
+          console.error("Copy failed:", err);
+          statusEl.textContent =
+            "Failed to copy. Please copy manually (Ctrl/Cmd + C).";
+        }
+      }
+
+      copyBtn.addEventListener("click", copyCode);
+    </script>
+  </body>
+</html>
